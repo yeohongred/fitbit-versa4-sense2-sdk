@@ -31,11 +31,11 @@ To use the Fitbit OS Simulator, the app will have to be built for Versa 3 or Sen
 
 # Sideloading
 
-Prior to sideloading the app, refer to the section on [Edits to package.json](#edits-to-package.json) to ensure the final app is built for Versa 4 and Sense 2.
+Prior to sideloading the app, refer to the section on [Edits to package.json](#edits-to-packagejson) to ensure the final app is built for Versa 4 and Sense 2.
 
 # Uploading to Fitbit App Gallery
 
-Before uploading the app to the Fitbit App Gallery, refer to the section on [Edits to package.json](#edits-to-package.json) to ensure the final app is built for Versa 4 and Sense 2.
+Before uploading the app to the Fitbit App Gallery, refer to the section on [Edits to package.json](#edits-to-packagejson) to ensure the final app is built for Versa 4 and Sense 2.
 
 # Edits to package.json
 
