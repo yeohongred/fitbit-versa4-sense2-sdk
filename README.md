@@ -1,49 +1,84 @@
-# Introduction
+# fitbit-versa4-sense2-sdk
 
-[fitbit-versa4-sense2-sdk](https://github.com/yeohongred/fitbit-versa4-sense2-sdk) is an unofficial guide to SDK development for the Fitbit Versa 4 and Sense 2. As of the time of making this guide, not only do both watches lack an officially released SDK, they also do not officially support public third-party apps on the Fitbit App Gallery either.
+This is an unofficial guide to SDK development for the **Fitbit Versa 4 and Sense 2**. As of the time of making this guide, not only do both watches lack an officially released SDK, they also do not officially support public third-party apps on the Fitbit App Gallery either.
 
 This guide aims to demonstrate how one could approach creating an app or watch face for the Fitbit Versa 4 and Sense 2, testing it with the Fitbit OS Simulator or said devices, as well as installing it through sideloading or uploading to the Fitbit App Gallery as a private app.
 
 The method sticks closely to the [official guide](https://dev.fitbit.com/getting-started/) for the official Fitbit SDK, but involves edits to the package.json file — changing the `"devDependencies"` and `"buildTargets"` so that the app is built to be installed on a Versa 4 or Sense 2.
 
-# Prequisities
+## Prequisites
 
 These are what you need before you get started developing:
 
-- [Fitbit user account](https://www.fitbit.com/signup)
+- [Fitbit user account](https://www.fitbit.com/signup) with [developer functionality](https://gam.fitbit.com/)
 - Fitbit OS device (in this case Versa 4 or Sense 2) or Fitbit OS Simulator for [Windows](https://simulator-updates.fitbit.com/download/stable/win) or [macOS](https://simulator-updates.fitbit.com/download/stable/mac)
 - The latest Fitbit mobile application for [Android](http://play.google.com/store/apps/details?id=com.fitbit.FitbitMobile) or [iOS](http://itunes.apple.com/us/app/fitbit-activity-calorie-tracker/id462638897?mt=8&uo=4), paired with your Fitbit OS device (in this case Versa 4 or Sense 2)
 - Windows or Mac computer
 - A wireless network to provide the Fitbit OS device a connection to the internet
 - [Node.js](https://nodejs.org/) (version 14 is recommended by the official guide, but through testing version 22 also works)
 
-# Create Project
+## Create Project
 
-```
+Open a terminal or command prompt window on your computer and type:
+
+```bash
 npx create-fitbit-app example-app
 ```
 
+Subsequently, follow the prompts to choose what kind of app you want and what to include.
+
 By default, this process will create a project for the Versa 3 and Sense. Depending on the approach for building, testing, and installing the app, the point at which you make edits to the package.json file will differ. If the Fitbit OS Simulator will be used, the package.json will remain unchanged. If sideloading or uploading the app to the Fitbit App Gallery, the package.json will have be edited to ensure the final app is built for Versa 4 and Sense 2.
 
-# Fitbit OS Simulator
+## Fitbit OS Simulator
 
 To use the Fitbit OS Simulator, the app will have to be built for Versa 3 or Sense for testing purposes. This is as the simulator does not support testing for Versa 4 or Sense 2. However, the devices are basically interchangeable for app development. In essence, if the app works for the predeccesor devices, it will most likely work for the Versa 4 and Sense 2.
 
-# Sideloading
+## Sideloading
 
-Prior to sideloading the app, refer to the section on [Edits to package.json](#edits-to-packagejson) to ensure the final app is built for Versa 4 and Sense 2.
+Prior to sideloading the app, refer to the section on **[Edits to package.json](#edits-to-packagejson)** to ensure the final app is built for Versa 4 and Sense 2. Additionally, connect the watch to your computer via USB and enable USB debugging? on your watch. The Developer Bridge will also have to be enabled on your phone's Fitbit app. If you did not gain access to developer functionality as stated in the **[Prequisites](#prequisites)** section, these options will be unavailable.
 
-# Uploading to Fitbit App Gallery
+To build your app, open your terminal or command prompt in the project directory and type:
 
-Before uploading the app to the Fitbit App Gallery, refer to the section on [Edits to package.json](#edits-to-packagejson) to ensure the final app is built for Versa 4 and Sense 2.
+```sh
+npx fitbit-build
+```
 
-# Edits to package.json
+Alternatively, you can first launch the Fitbit Shell by typing:
+
+```sh
+npx fitbit
+```
+
+The command line interface should now display `fitbit$`. From there, to build your app:
+
+```sh
+fitbit$ build
+```
+
+To install your app:
+
+```sh
+fitbit$ install
+```
+
+You can also build and install your app in one command by typing either line:
+
+```sh
+fitbit$ build-and-install
+fitbit$ bi
+```
+
+## Uploading to Fitbit App Gallery
+
+Before uploading the app to the Fitbit App Gallery, refer to the section on **[Edits to package.json](#edits-to-packagejson)** to ensure the final app is built for Versa 4 and Sense 2.
+
+## Edits to package.json
 
 To ensure that the app can be built and installed on a Versa 4 or Sense 2, the following fields in the package.json file generated by the setup have to be changed.
 
 Firstly, the versions of the default dependencies in `"devDependencies"` have to be changed to the pre-release versions that are capable of building and installing on the Versa 4 or Sense 2. As of the time of making this guide, the default versions of the dependencies are `"@fitbit/sdk": "~6.1.0"` and `"@fitbit/sdk-cli": "^1.7.3"`.
 
-```
+```json
 "devDependencies": {
   "@fitbit/sdk": "~6.1.0",
   "@fitbit/sdk-cli": "^1.7.3"
@@ -52,7 +87,7 @@ Firstly, the versions of the default dependencies in `"devDependencies"` have to
 
 The pre-release versions that they should be changed to are `"@fitbit/sdk": "~6.2.0-pre.1"` and `"@fitbit/sdk-cli": "~1.8.0-pre.10"`.
 
-```
+```json
 "devDependencies": {
   "@fitbit/sdk": "~6.2.0-pre.1",
   "@fitbit/sdk-cli": "~1.8.0-pre.10"
@@ -61,7 +96,7 @@ The pre-release versions that they should be changed to are `"@fitbit/sdk": "~6.
 
 Secondly, the `"buildTargets"` have to be changed to specify what devices the app should be build for. The default target aliases are `"atlas"` and `"vulcan"` for Versa 3 and Sense respectively.
 
-```
+```json
 "buildTargets": [
   "atlas",
   "vulcan"
@@ -70,18 +105,24 @@ Secondly, the `"buildTargets"` have to be changed to specify what devices the ap
 
 These should be changed to `"hera"` and `"rhea"` for Versa 4 and Sense 2 respectively.
 
-```
+```json
 "buildTargets": [
   "hera",
   "rhea"
 ]
 ```
 
+Every time you make edits to the package.json file, you must enter the following command while in the project directory for the changes to update the node_modules folder:
+
+```sh
+npm install
+```
+
 Included in this repository is an example package.json file with the above changes. All other fields in this example file remain unchanged from their default values except for the unique `"appUUID"` which has been crossed out. Depending if you decide to choose to develop an app or clock face, the `"appType"` will be `"app"` or `"clockface"` respectively.
 
 If you are constantly switching from building your app for Versa 3 and Sense, to building your app for Versa 4 and Sense 2, it might be more convenient to maintain an unedited and edited package.json file for easy reference.
 
-# References
+## References
 
 https://community.fitbit.com/t5/SDK-Development/Custom-faces-on-Versa-4/m-p/5504366#M19826
 
